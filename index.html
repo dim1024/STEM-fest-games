@@ -521,6 +521,36 @@ button:focus-visible, .game:focus-visible, input:focus-visible {
   .tiles { align-content:start;grid-auto-rows:auto; }
   .art { aspect-ratio:16/9; }
 }
+
+
+  
+/* Automatically center all game cards */
+.tiles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: stretch;
+}
+
+.tiles .game {
+  flex: 0 1 calc((100% - 3 * clamp(10px, 1.35vw, 20px)) / 4);
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .tiles .game {
+    flex-basis: calc((100% - 20px) / 2);
+  }
+}
+
+@media (max-width: 540px) {
+  .tiles .game {
+    flex-basis: 100%;
+  }
+}
+
+  
 </style>
 </head>
 <body>
@@ -663,7 +693,7 @@ button:focus-visible, .game:focus-visible, input:focus-visible {
 'use strict';
 
 // CHANGE THIS VALUE WHEN PUBLISHING A NEW VERSION
-const BUILD_VERSION = 'stemfest-2026-11-19.9';
+const BUILD_VERSION = 'stemfest-2026-11-19.10';
 
 // LOADING SCREEN DURATION: 2500 = 2.5 SECONDS
 const LOADING_SCREEN_MS = 2500;
