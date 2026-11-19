@@ -3,34 +3,45 @@
   "games": [
     {
       "url": "https://tc9303-a11y.github.io/TEVINS-GAME/",
-      "title": "Shark Parkour"
+      "title": "Shark Parkour",
+      "image": "screenshots/Shark Parkour.png"
     },
     {
-      "url": "https://4evaleo.github.io/ultimate_game/"
+      "url": "https://4evaleo.github.io/ultimate_game/",
+      "image": "screenshots/Ultimate Game.png"
+      
     },
     {
-      "url": "https://kb1699-wq.github.io/NUMBER-SHIFT/"
+      "url": "https://kb1699-wq.github.io/NUMBER-SHIFT/",
+      "title": "Number Shift",
+      "image": "screenshots/Number Shift.png"
     },
     {
       "url": "https://kl84600.github.io/Warriors-battle/",
-      "title": "Hollow Knight Duel"
+      "title": "Hollow Knight Duel",
+      "image": "screenshots/Hollow Night Dual.png"
     },
     {
-      "url": "https://certified-stranger.github.io/SpinStop/"
+      "url": "https://certified-stranger.github.io/SpinStop/",
+      "image": "screenshots/Spinstop.png"
     },
     {
-      "url": "https://sl2926-byte.github.io/Astralhunter/"
+      "url": "https://sl2926-byte.github.io/Astralhunter/",
+      "image": "screenshots/Astral Hunter.png"
     },
     {
       "url": "https://jp2919-creator.github.io/My-Game/",
-      "title": "Realms of the Deep"
+      "title": "Realms of the Deep",
+      "image": "Realism of the deep.png"
     },
     {
-      "url": "https://ew2952.github.io/Cave-Diving/"
+      "url": "https://ew2952.github.io/Cave-Diving/",
+      "image": "screenshots/Shark Parkour.png"
     },
     {
       "url": "https://sc8272-byte.github.io/FluffyClash/",
-      "title": "Fluff Clash 3D"
+      "title": "Fluff Clash 3D",
+      "image": "screenshots/Fluff Clash 3d.png"
     }
   ]
 }
