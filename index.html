@@ -1,1452 +1,1652 @@
-
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#080e21">
-<title>STEM Fest | Frontier Schools Kansas City</title>
-<style>
-:root {
-  color-scheme: dark;
-  --bg: #070c1d;
-  --yellow: #ffc83d;
-  --text: #f7f9ff;
-  --muted: #b0bdd3;
-}
-* { box-sizing: border-box; }
-html, body {
-  margin: 0;
-  min-height: 100%;
-  font-family: Inter, system-ui, Arial, sans-serif;
-  color: var(--text);
-  background: var(--bg);
-}
-body:before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse at 10% 10%, #14386690, transparent 48%),
-    radial-gradient(ellipse at 90% 95%, #29255e65, transparent 60%);
-  z-index: -1;
-}
-button, input { font: inherit; }
-button { cursor: pointer; }
-button:disabled { opacity: .45; cursor: not-allowed; }
-button:focus-visible, .game:focus-visible, input:focus-visible {
-  outline: 3px solid var(--yellow);
-  outline-offset: 3px;
-}
-.hidden { display: none !important; }
-
-/* MAIN HUB */
-.hub {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  max-width: 1760px;
-  margin: auto;
-  padding: clamp(12px,1.5vw,24px) clamp(14px,2.4vw,38px) 16px;
-  gap: clamp(12px,1.4vw,20px);
-}
-.header {
-  display: grid;
-  grid-template-columns: minmax(195px,285px) minmax(0,1fr) auto;
-  gap: clamp(12px,1.8vw,28px);
-  align-items: center;
-  min-height: 88px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid #31425b;
-}
-.identity {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
-.brand-logo {
-  width: clamp(43px,3.9vw,59px);
-  height: clamp(43px,3.9vw,59px);
-  object-fit: contain;
-  flex: none;
-}
-.festival {
-  font-weight: 950;
-  letter-spacing: -.065em;
-  font-size: clamp(25px,2.25vw,38px);
-  line-height: 1;
-}
-.festival em {
-  color: var(--yellow);
-  font-style: normal;
-}
-.school {
-  font-weight: 900;
-  letter-spacing: .055em;
-  font-size: clamp(9px,.73vw,11px);
-  margin-top: 5px;
-  color: #e5edfb;
-  text-transform: uppercase;
-  line-height: 1.3;
-}
-.headline {
-  text-align: center;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-}
-.headline-primary {
-  color: var(--yellow);
-  font-size: clamp(19px,1.85vw,31px);
-  font-weight: 950;
-  letter-spacing: -.035em;
-  line-height: 1.12;
-}
-.headline-secondary {
-  color: #f8fbff;
-  font-size: clamp(13px,1.13vw,19px);
-  font-weight: 730;
-  line-height: 1.26;
-}
-.header-right {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.count {
-  border: 1px solid #475b79;
-  border-radius: 99px;
-  padding: 8px 10px;
-  font-weight: 900;
-  font-size: 11px;
-  color: #c9d4e9;
-  white-space: nowrap;
-}
-.manage {
-  border: 1px solid #475b79;
-  background: #162744;
-  color: #e6ecfa;
-  padding: 11px 12px;
-  border-radius: 13px;
-  font-size: 13px;
-  font-weight: 850;
-  white-space: nowrap;
-}
-.manage:hover { border-color: var(--yellow); }
-
-/* GAME CARDS */
-.tiles {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  gap: clamp(10px,1.35vw,20px);
-  align-content: center;
-  grid-template-columns: repeat(var(--cols,3),minmax(0,1fr));
-  grid-auto-rows: minmax(0,1fr);
-}
-.game {
-  position: relative;
-  border: 1px solid #425477;
-  background: #14203a;
-  border-radius: clamp(15px,1.6vw,24px);
-  padding: clamp(6px,.8vw,12px);
-  min-width: 0;
-  min-height: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform .2s, border-color .2s, box-shadow .2s;
-  cursor: pointer;
-  box-shadow: 0 15px 38px #0003;
-}
-.game:hover, .game:focus-visible {
-  transform: translateY(-4px);
-  border-color: var(--yellow);
-  box-shadow: 0 16px 55px #0008, 0 0 0 1px #ffc83d66;
-}
-.art {
-  flex: 1;
-  min-height: 0;
-  position: relative;
-  overflow: hidden;
-  border-radius: clamp(10px,1.15vw,17px);
-  background: linear-gradient(130deg,var(--tone,#275476),#111831 80%);
-  aspect-ratio: 16/9;
-  display: grid;
-  place-items: center;
-}
-.art:before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: .25;
-  background: radial-gradient(circle at 30% 30%,#ffffff55,transparent 50%);
-}
-.art img {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  inset: 0;
-  object-fit: cover;
-  z-index: 1;
-}
-.art .emoji {
-  font-size: clamp(62px,7vw,115px);
-  filter: drop-shadow(0 12px 25px #0009);
-}
-.play {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  background: #080d1ca9;
-  opacity: 0;
-  transition: opacity .18s;
-}
-.game:hover .play, .game:focus-visible .play { opacity: 1; }
-.play span {
-  background: var(--yellow);
-  color: #091022;
-  padding: 13px 26px;
-  font-size: 16px;
-  border-radius: 99px;
-  font-weight: 1000;
-}
-.game-info {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: clamp(9px,1.1vw,16px) clamp(6px,.75vw,12px) clamp(3px,.4vw,6px);
-}
-.game-name {
-  font-weight: 950;
-  letter-spacing: -.03em;
-  font-size: clamp(18px,2vw,30px);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.arrow {
-  flex: none;
-  background: #263a56;
-  border: 1px solid #4d6381;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  color: var(--yellow);
-  width: clamp(34px,3.2vw,48px);
-  height: clamp(34px,3.2vw,48px);
-  font-size: 23px;
-}
-.game:hover .arrow {
-  background: var(--yellow);
-  color: #151927;
-}
-.empty {
-  grid-column: 1/-1;
-  text-align: center;
-  color: var(--muted);
-  padding: 40px;
-  font-size: 20px;
-}
-.tiles[data-count="1"] { max-width:760px;width:100%;margin-inline:auto; }
-.tiles[data-count="2"] { max-width:1330px;width:100%;margin-inline:auto; }
-.tiles[data-count="3"] { max-width:1550px;width:100%;margin-inline:auto; }
-
-/* LOADING SCREEN */
-.launch-splash {
-  position: fixed;
-  inset: 0;
-  z-index: 35;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 27px;
-  padding: 26px;
-  text-align: center;
-  background: radial-gradient(ellipse at center,#1a3152 0%,#091428 55%,#050a16 100%);
-  opacity: 1;
-  transition: opacity .22s ease;
-}
-.launch-splash.vanish {
-  opacity: 0;
-  pointer-events: none;
-}
-.launch-message {
-  max-width: 920px;
-  font-size: clamp(23px,3.2vw,53px);
-  line-height: 1.19;
-  letter-spacing: -.035em;
-  font-weight: 850;
-  color: #f7f9ff;
-}
-.launch-spinner {
-  width: 44px;
-  height: 44px;
-  border: 4px solid #ffffff30;
-  border-top-color: var(--yellow);
-  border-radius: 50%;
-  animation: launch-spin .68s linear infinite;
-}
-@keyframes launch-spin { to { transform:rotate(360deg); } }
-
-/* GAME VIEWER */
-.viewer {
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  background: #030817;
-  display: flex;
-  flex-direction: column;
-}
-.viewer-bar {
-  min-height: 61px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  background: #101a30;
-  border-bottom: 1px solid #293c59;
-  padding: 8px 15px;
-}
-.viewer-bar strong {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.viewer-buttons {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.action {
-  border: 1px solid #465a78;
-  background: #22344f;
-  color: white;
-  padding: 10px 13px;
-  border-radius: 11px;
-  font-weight: 800;
-  font-size: 12px;
-  white-space: nowrap;
-}
-.back {
-  background: var(--yellow);
-  color: #171e29;
-  border: 0;
-  font-weight: 1000;
-}
-.viewer-body {
-  flex: 1;
-  min-height: 0;
-  position: relative;
-}
-.viewer-body iframe {
-  border: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: #101b29;
-}
-.viewer:fullscreen .viewer-bar { display:none; }
-
-/* SETTINGS */
-.scrim {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  background: #02050bd9;
-  display: grid;
-  place-items: center;
-  padding: 15px;
-  backdrop-filter: blur(7px);
-}
-.dialog {
-  background: #111d33;
-  border: 1px solid #405676;
-  border-radius: 20px;
-  box-shadow: 0 25px 90px #000a;
-  width: min(770px,100%);
-  max-height: 93dvh;
-  overflow: auto;
-  padding: clamp(18px,3vw,28px);
-}
-.dialog-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 15px;
-  margin-bottom: 16px;
-}
-.dialog h2 { margin:0 0 7px;font-size:25px; }
-.sub { font-size:13px;color:#b6c5dc;line-height:1.5;margin:0; }
-.manage-list { display:grid;gap:8px;margin:16px 0; }
-.manage-row {
-  background: #192a45;
-  border: 1px solid #344b6b;
-  border-radius: 12px;
-  padding: 10px 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-.manage-row strong { font-size:14px; }
-.manage-row small {
-  display: block;
-  color: #a2b6d2;
-  margin-top: 4px;
-  font-size: 11px;
-  word-break: break-word;
-}
-.manage-tools { display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end; }
-.mini {
-  background: #2b405d;
-  border: 1px solid #4b6281;
-  border-radius: 9px;
-  color: white;
-  font-size: 11px;
-  font-weight: 800;
-  padding: 8px 10px;
-}
-.mini:hover { background:#3b5678; }
-.delete { color:#ffb8b8; }
-.field-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 13px;
-}
-.field { display:grid;gap:6px; }
-.wide { grid-column:1/-1; }
-.field label {
-  font-size: 11px;
-  letter-spacing: .11em;
-  color: #c0d1ea;
-  text-transform: uppercase;
-  font-weight: 900;
-}
-.field input {
-  background: #08152b;
-  border: 1px solid #3d5779;
-  color: white;
-  padding: 11px;
-  border-radius: 10px;
-  width: 100%;
-  min-width: 0;
-}
-.row-actions { display:flex;flex-wrap:wrap;gap:8px;margin-top:14px; }
-.primary {
-  background: var(--yellow);
-  border: 0;
-  color: #101a2a;
-  border-radius: 10px;
-  font-weight: 950;
-  padding: 11px 15px;
-}
-.secondary {
-  border: 1px solid #486485;
-  background: #263954;
-  color: white;
-  border-radius: 10px;
-  font-weight: 850;
-  padding: 11px 15px;
-}
-.hint { font-size:12px;color:#a5b9d2;line-height:1.5; }
-.divider { border:0;border-top:1px solid #334865;margin:22px 0; }
-.filepick { cursor:pointer;display:inline-flex;align-items:center; }
-.filepick input { display:none; }
-.toast {
-  position: fixed;
-  z-index: 70;
-  left: 50%;
-  bottom: 24px;
-  transform: translateX(-50%);
-  background: var(--yellow);
-  color: #101822;
-  border-radius: 12px;
-  padding: 12px 20px;
-  font-weight: 900;
-  font-size: 13px;
-  box-shadow: 0 12px 36px #0009;
-}
-
-@media(min-width:960px) and (min-height:660px) {
-  .hub { height:100dvh; }
-  .tiles:not(.overflow) { overflow:hidden; }
-  .tiles:not(.overflow) .game { max-height:100%; }
-  .tiles:not(.overflow) .art { aspect-ratio:auto; }
-}
-@media(max-width:1100px) {
-  .header { grid-template-columns:minmax(155px,225px) minmax(0,1fr) auto;gap:12px; }
-  .count { display:none; }
-  .headline-primary { font-size:clamp(18px,2.2vw,25px); }
-  .headline-secondary { font-size:clamp(12px,1.45vw,16px); }
-  .brand-logo { width:46px;height:46px; }
-}
-@media(max-width:900px) {
-  .tiles { grid-template-columns:repeat(2,minmax(0,1fr))!important;align-content:start;grid-auto-rows:auto; }
-  .art { aspect-ratio:16/9!important; }
-  .game { min-height:210px; }
-}
-@media(max-width:740px) {
-  .header { grid-template-columns:1fr auto;gap:9px 12px; }
-  .identity { grid-column:1; }
-  .header-right { grid-column:2;grid-row:1; }
-  .headline { grid-column:1/-1;grid-row:2;padding:7px 0 3px; }
-  .headline-primary { font-size:clamp(21px,4.2vw,28px); }
-  .headline-secondary { font-size:clamp(13px,2.6vw,17px); }
-}
-@media(max-width:620px) {
-  .field-grid { grid-template-columns:1fr; }
-  .viewer-bar { flex-wrap:wrap; }
-  .viewer-buttons { width:100%; }
-  .viewer-bar strong { display:none; }
-  .action { padding:10px 9px; }
-  .manage-row { align-items:flex-start;flex-direction:column; }
-}
-@media(max-width:540px) {
-  .tiles { grid-template-columns:1fr!important; }
-  .game { min-height:230px; }
-  .game-name { font-size:23px; }
-}
-@media(max-height:650px) and (min-width:901px) {
-  .hub { height:auto;min-height:100dvh; }
-  .tiles { align-content:start;grid-auto-rows:auto; }
-  .art { aspect-ratio:16/9; }
-}
-
-
-  
-/* Automatically center all game cards */
-.tiles {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
-  align-items: stretch;
-}
-
-.tiles .game {
-  flex: 0 1 calc((100% - 3 * clamp(10px, 1.35vw, 20px)) / 4);
-  min-width: 0;
-}
-
-@media (max-width: 900px) {
-  .tiles .game {
-    flex-basis: calc((100% - 20px) / 2);
-  }
-}
-
-@media (max-width: 540px) {
-  .tiles .game {
-    flex-basis: 100%;
-  }
-}
-
-  
-</style>
-</head>
-<body>
-
-<main id="hub" class="hub">
-  <header class="header">
-    <div class="identity">
-      <img class="brand-logo"
-           src="screenshots/frontier-logo.png"
-           alt="Frontier Schools logo">
-      <div>
-        <div class="festival">STEM <em>Fest</em></div>
-        <div class="school">Frontier Schools Kansas City</div>
-      </div>
-    </div>
-
-    <div class="headline">
-      <div class="headline-primary">
-        All Games Created by Students
-      </div>
-      <div class="headline-secondary">
-        Using the Knowledge and Skills Gained at Frontier Schools.
-      </div>
-    </div>
-
-    <div class="header-right">
-      <span class="count" id="count">0 GAMES</span>
-      <button class="manage" id="manageBtn">⚙ Manage Games</button>
-    </div>
-  </header>
-
-  <section class="tiles" id="tiles" aria-label="Choose a game"></section>
-</main>
-
-<div class="launch-splash hidden" id="launchSplash">
-  <div class="launch-message">
-    Created by Students Using the Knowledge Gained at Frontier Schools.
-  </div>
-  <div class="launch-spinner"></div>
-</div>
-
-<div class="viewer hidden" id="viewer">
-  <div class="viewer-bar">
-    <button id="back" class="action back">← ALL GAMES</button>
-    <strong id="playingTitle"></strong>
-    <div class="viewer-buttons">
-      <button class="action" id="restart">↻ RESTART</button>
-      <button class="action" id="full">⛶ FULL SCREEN</button>
-    </div>
-  </div>
-  <div class="viewer-body">
-    <iframe
-      id="frame"
-      title="Game"
-      tabindex="-1"
-      allow="fullscreen; gamepad; autoplay; serial"
-      allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<div class="scrim hidden" id="scrim">
-  <div class="dialog" role="dialog" aria-modal="true">
-    <div class="dialog-top">
-      <div>
-        <h2>⚙ Manage Games</h2>
-        <p class="sub" id="modeNote"></p>
-      </div>
-      <button class="mini" id="closeManager">✕ Close</button>
-    </div>
-
-    <div class="manage-list" id="manageList"></div>
-    <div class="row-actions">
-      <button class="secondary" id="newGame">＋ ADD GAME</button>
-      <button class="secondary" id="sharedReset">↻ RESTORE SHARED LIST</button>
-    </div>
-
-    <hr class="divider">
-
-    <h3 id="formHeading">Add a game</h3>
-    <form id="form">
-      <div class="field-grid">
-        <div class="field">
-          <label for="gameName">Name *</label>
-          <input id="gameName" required maxlength="75">
-        </div>
-        <div class="field">
-          <label for="category">Category</label>
-          <input id="category" maxlength="38">
-        </div>
-        <div class="field wide">
-          <label for="gameUrl">GitHub Pages URL *</label>
-          <input id="gameUrl" type="url">
-        </div>
-        <div class="field">
-          <label for="gameEmoji">Emoji</label>
-          <input id="gameEmoji" maxlength="8" placeholder="🎮">
-        </div>
-        <div class="field">
-          <label for="gameColor">Background</label>
-          <input id="gameColor" type="color" value="#24648d">
-        </div>
-        <div class="field wide">
-          <label for="gameImage">Screenshot path / URL</label>
-          <input id="gameImage" placeholder="screenshots/game.png">
-        </div>
-        <div class="field wide">
-          <label for="imageUpload">Upload screenshot (local only)</label>
-          <input id="imageUpload" type="file" accept="image/png,image/jpeg,image/webp">
-        </div>
-      </div>
-
-      <div class="row-actions">
-        <button class="primary" id="saveBtn" type="submit">SAVE GAME</button>
-        <button class="secondary" id="clearForm" type="button">CLEAR</button>
-      </div>
-    </form>
-
-    <hr class="divider">
-
-    <div class="row-actions">
-      <button class="secondary" id="export">↓ EXPORT games.json</button>
-      <label class="secondary filepick">
-        ↑ IMPORT JSON
-        <input id="importFile" type="file" accept=".json,application/json">
-      </label>
-    </div>
-
-    <p class="hint">
-      Games normally load from shared games.json.
-      Emergency changes are saved on this computer only.
-      Restore the shared list to remove local changes.
-    </p>
-  </div>
-</div>
-
-<div class="toast hidden" id="toast" role="status"></div>
-
-<script>
-'use strict';
-
-// CHANGE THIS VALUE WHEN PUBLISHING A NEW VERSION
-const BUILD_VERSION = 'stemfest-2026-11-19.10';
-
-// LOADING SCREEN DURATION: 2500 = 2.5 SECONDS
-const LOADING_SCREEN_MS = 2500;
-
-const STORE = 'frontier.stemfest.override.v4';
-const $ = id => document.getElementById(id);
-
-let games = [];
-let sharedGames = [];
-let sharedVersion = '';
-let override = false;
-let activeId = null;
-let editingId = null;
-let queuedRefresh = null;
-let launchTimer = null;
-let splashTimer = null;
-let toastTimer = null;
-
-const DEMO = [
-  {
-    title:'Shark Parkour',
-    url:'',
-    emoji:'🦈',
-    color:'#0d7792'
-  },
-  {
-    title:'Exponent Quest',
-    url:'',
-    emoji:'⚔️',
-    color:'#6247a3'
-  },
-  {
-    title:'Space Landing',
-    url:'',
-    emoji:'🚀',
-    color:'#ac5937'
-  }
-];
-
-function idNew() {
-  return 'game-' + Date.now().toString(36) + '-' +
-    Math.random().toString(36).slice(2,8);
-}
-
-function stableId(url) {
-  let h = 2166136261;
-  for (const c of url) {
-    h = Math.imul(h ^ c.charCodeAt(0), 16777619);
-  }
-  return 'url-' + (h >>> 0).toString(36);
-}
-
-function urlLabel(url) {
-  try {
-    const u = new URL(url);
-    let text = decodeURIComponent(
-      u.pathname.split('/').filter(Boolean).pop() ||
-      u.hostname.split('.')[0]
-    );
-    return text
-      .replace(/\.(html?|php)$/i,'')
-      .replace(/[-_]+/g,' ')
-      .replace(/\b\w/g,c=>c.toUpperCase()) || 'Game';
-  } catch {
-    return 'Game';
-  }
-}
-
-function normalize(g) {
-  if (typeof g === 'string') g = {url:g};
-  const url = String(g.url || '').trim();
-
-  return {
-    id: String(g.id || stableId(url) || idNew()),
-    title: String(g.title || urlLabel(url)),
-    category: String(g.category || ''),
-    url,
-    image: String(g.image || ''),
-    emoji: String(g.emoji || '🎮'),
-    color: /^#[0-9a-fA-F]{6}$/.test(g.color)
-      ? g.color : '#24648d',
-    autoTitle: !String(g.title || '').trim()
-  };
-}
-
-function safeUrl(s) {
-  try {
-    const u = new URL(s,location.href);
-    return ['https:','http:'].includes(u.protocol) ? u.href : '';
-  } catch {
-    return '';
-  }
-}
-
-function noCache(url) {
-  const u = new URL(url,location.href);
-  u.searchParams.set('_stemfresh',Date.now().toString());
-  return u.href;
-}
-
-function notify(str) {
-  const t = $('toast');
-  t.textContent = str;
-  t.classList.remove('hidden');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>t.classList.add('hidden'),3200);
-}
-
-function saved() {
-  try {
-    const raw = localStorage.getItem(STORE);
-    if (raw === null) return null;
-    const value = JSON.parse(raw);
-    return Array.isArray(value) ? value.map(normalize) : null;
-  } catch {
-    return null;
-  }
-}
-
-function persist() {
-  try {
-    localStorage.setItem(STORE,JSON.stringify(games));
-    override = true;
-    updateMode();
-    return true;
-  } catch {
-    notify('Storage full. Export JSON to save your list.');
-    return false;
-  }
-}
-
-function updateMode() {
-  $('modeNote').textContent = override
-    ? 'LOCAL OVERRIDE: changes apply to this computer only.'
-    : 'SHARED LIST: loaded from games.json for every computer.';
-}
-
-async function getShared() {
-  try {
-    const r = await fetch(noCache('./games.json'),{
-      cache:'no-store'
-    });
-    if (!r.ok) return null;
-    const data = await r.json();
-    const list = Array.isArray(data) ? data : data.games;
-    if (!Array.isArray(list)) return null;
-
-    return {
-      version:String(data.version || ''),
-      games:list.map(normalize)
-    };
-  } catch {
-    return null;
-  }
-}
-
-function applyShared(data) {
-  if (!data) return;
-  sharedGames = data.games;
-  sharedVersion = data.version;
-
-  if (!override) {
-    games = sharedGames.map(normalize);
-    render();
-    games.forEach(findGameTitle);
-  }
-  $('sharedReset').disabled = false;
-  updateMode();
-}
-
-async function findGameTitle(g) {
-  if (!g.autoTitle || !safeUrl(g.url)) return;
-
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(()=>controller.abort(),4500);
-    let r;
-    try {
-      r = await fetch(g.url,{signal:controller.signal});
-    } finally {
-      clearTimeout(timeout);
-    }
-    if (!r.ok) return;
-
-    const html = await r.text();
-    const match = html.match(/<title[^>]*>([^<]{1,140})<\/title>/i);
-    if (!match) return;
-
-    const div = document.createElement('textarea');
-    div.innerHTML = match[1];
-    const found = div.value.trim();
-
-    if (found) {
-      g.title = found;
-      render();
-    }
-  } catch {
-    // Cross-origin sites may prevent title detection.
-  }
-}
-
-async function init() {
-  const local = saved();
-  override = local !== null;
-  games = local || DEMO.map(normalize);
-
-  render();
-  games.forEach(findGameTitle);
-  updateMode();
-
-  const data = await getShared();
-  if (data) applyShared(data);
-  else $('sharedReset').disabled = true;
-
-  setInterval(checkUpdates,45000);
-
-  document.addEventListener('visibilitychange',()=>{
-    if (!document.hidden) checkUpdates();
-  });
-}
-
-function make(tag,className,txt) {
-  const el = document.createElement(tag);
-  if (className) el.className = className;
-  if (txt !== undefined) el.textContent = txt;
-  return el;
-}
-
-function imageSource(s) {
-  if (s.startsWith('data:image/')) return s;
-  const url = safeUrl(s);
-  if (!url) return '';
-
-  const u = new URL(url);
-  if (u.origin === location.origin) {
-    u.searchParams.set('v',sharedVersion || BUILD_VERSION);
-  }
-  return u.href;
-}
-
-function cols(n) {
-  const w = window.innerWidth;
-  if (w <= 900) return w <= 540 ? 1 : 2;
-  if (n <= 1) return 1;
-  if (n === 2) return 2;
-  if (n <= 3) return 3;
-  if (n <= 4) return 2;
-  if (n <= 6) return 3;
-  return 4;
-}
-
-function render() {
-  const root = $('tiles');
-  root.replaceChildren();
-
-  const n = games.length;
-  root.dataset.count = String(n);
-  $('count').textContent = n + (n === 1 ? ' GAME' : ' GAMES');
-
-  const c = cols(n);
-  root.style.setProperty('--cols',c);
-  root.classList.toggle('overflow',n > c*2);
-
-  if (!n) {
-    root.append(make('div','empty','No games available.'));
-    return;
-  }
-
-  for (const g of games) {
-    const card = make('article','game');
-    card.tabIndex = 0;
-    card.setAttribute('role','button');
-    card.setAttribute('aria-label','Play '+g.title);
-
-    const art = make('div','art');
-    art.style.setProperty('--tone',g.color);
-
-    const emoji = make('span','emoji',g.emoji);
-    art.append(emoji);
-
-    if (g.image) {
-      const src = imageSource(g.image);
-      if (src) {
-        const img = make('img');
-        img.src = src;
-        img.alt = 'Screenshot: '+g.title;
-        img.loading = 'lazy';
-        img.onerror = ()=>img.remove();
-        art.append(img);
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#080e21" />
+    <meta name="robots" content="noindex" />
+    <title>STEM Fest | Frontier Schools Kansas City</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #070c1d;
+        --panel: #121e37;
+        --edge: #304263;
+        --yellow: #ffc83d;
+        --aqua: #6ce5f3;
+        --text: #f7f9ff;
+        --muted: #b0bdd3;
       }
-    }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        font-family: Inter, ui-sans-serif, system-ui, Arial, sans-serif;
+        color: var(--text);
+        background: var(--bg);
+      }
+      button,
+      input {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      body:before {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        content: "";
+        background:
+          radial-gradient(ellipse at 10% 10%, #14386690, transparent 48%),
+          radial-gradient(ellipse at 90% 95%, #29255e65, transparent 60%);
+        z-index: -1;
+      }
+      button:focus-visible,
+      .game:focus-visible,
+      input:focus-visible {
+        outline: 3px solid var(--yellow);
+        outline-offset: 3px;
+      }
+      .hidden {
+        display: none !important;
+      }
+      .hub {
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        max-width: 1760px;
+        margin: auto;
+        padding: clamp(12px, 1.5vw, 24px) clamp(14px, 2.4vw, 38px) 16px;
+        gap: clamp(12px, 1.4vw, 20px);
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        min-height: 78px;
+        padding-bottom: clamp(10px, 1.4vw, 18px);
+        border-bottom: 1px solid #31425b;
+      }
+      .identity {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        min-width: 0;
+      }
+      .brand-logo {
+        width: clamp(55px, 5.3vw, 80px);
+        height: clamp(55px, 5.3vw, 80px);
+        object-fit: contain;
+        flex: none;
+        filter: drop-shadow(0 3px 8px #0009);
+      }
+      .festival {
+        font-weight: 950;
+        letter-spacing: -0.065em;
+        font-size: clamp(28px, 3.3vw, 53px);
+        line-height: 1;
+      }
+      .festival em {
+        color: var(--yellow);
+        font-style: normal;
+      }
+      .school {
+        font-weight: 900;
+        letter-spacing: 0.16em;
+        font-size: clamp(10px, 0.88vw, 14px);
+        margin-top: 6px;
+        color: #e5edfb;
+        text-transform: uppercase;
+      }
+      .purpose {
+        font-weight: 550;
+        color: var(--muted);
+        font-size: clamp(11px, 1.03vw, 16px);
+        margin-top: 6px;
+        line-height: 1.25;
+      }
+      .purpose strong {
+        color: #fff;
+      }
+      .header-right {
+        display: flex;
+        gap: 9px;
+        align-items: center;
+        flex: none;
+      }
+      .count {
+        border: 1px solid #475b79;
+        border-radius: 99px;
+        padding: 11px 14px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #c9d4e9;
+        white-space: nowrap;
+      }
+      .manage {
+        border: 1px solid #475b79;
+        background: #162744;
+        color: #e6ecfa;
+        padding: 12px 15px;
+        border-radius: 13px;
+        font-size: 13px;
+        font-weight: 850;
+        white-space: nowrap;
+      }
+      .manage:hover {
+        border-color: var(--yellow);
+      }
+      .tiles {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        gap: clamp(10px, 1.35vw, 20px);
+        align-content: center;
+        grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+        grid-auto-rows: minmax(0, 1fr);
+      }
+      .game {
+        position: relative;
+        border: 1px solid #425477;
+        background: #14203a;
+        border-radius: clamp(15px, 1.6vw, 24px);
+        padding: clamp(6px, 0.8vw, 12px);
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition:
+          transform 0.2s,
+          border-color 0.2s,
+          box-shadow 0.2s;
+        cursor: pointer;
+        box-shadow: 0 15px 38px #0003;
+      }
+      .game:hover,
+      .game:focus-visible {
+        transform: translateY(-4px);
+        border-color: var(--yellow);
+        box-shadow:
+          0 16px 55px #0008,
+          0 0 0 1px #ffc83d66;
+      }
+      .art {
+        flex: 1;
+        min-height: 0;
+        position: relative;
+        overflow: hidden;
+        border-radius: clamp(10px, 1.15vw, 17px);
+        background: linear-gradient(130deg, var(--tone, #275476), #111831 80%);
+        aspect-ratio: 16/9;
+        display: grid;
+        place-items: center;
+      }
+      .art:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.25;
+        background: radial-gradient(
+          circle at 30% 30%,
+          #ffffff55,
+          transparent 50%
+        );
+      }
+      .art img {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        inset: 0;
+        object-fit: cover;
+        z-index: 1;
+      }
+      .art .emoji {
+        font-size: clamp(62px, 7vw, 115px);
+        filter: drop-shadow(0 12px 25px #0009);
+      }
+      .play {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+        background: #080d1ca9;
+        opacity: 0;
+        transition: opacity 0.18s;
+      }
+      .game:hover .play,
+      .game:focus-visible .play {
+        opacity: 1;
+      }
+      .play span {
+        background: var(--yellow);
+        color: #091022;
+        padding: 13px 26px;
+        font-size: 16px;
+        border-radius: 99px;
+        font-weight: 1000;
+      }
+      .game-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: clamp(9px, 1.1vw, 16px) clamp(6px, 0.75vw, 12px)
+          clamp(3px, 0.4vw, 6px);
+      }
+      .game-name {
+        font-weight: 950;
+        letter-spacing: -0.03em;
+        font-size: clamp(18px, 2vw, 30px);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .game-tag {
+        font-size: clamp(9px, 0.75vw, 12px);
+        font-weight: 850;
+        color: var(--aqua);
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 4px;
+      }
+      .arrow {
+        flex: none;
+        background: #263a56;
+        border: 1px solid #4d6381;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        color: var(--yellow);
+        width: clamp(34px, 3.2vw, 48px);
+        height: clamp(34px, 3.2vw, 48px);
+        font-size: 23px;
+      }
+      .game:hover .arrow {
+        background: var(--yellow);
+        color: #151927;
+      }
+      .empty {
+        grid-column: 1/-1;
+        text-align: center;
+        color: var(--muted);
+        padding: 40px;
+        font-size: 20px;
+      }
+      /* With few games, maintain large tiles but avoid oversized image stretching. */
+      .tiles[data-count="1"] {
+        max-width: 760px;
+        width: 100%;
+        margin-inline: auto;
+      }
+      .tiles[data-count="2"] {
+        max-width: 1330px;
+        width: 100%;
+        margin-inline: auto;
+      }
+      .tiles[data-count="3"] {
+        max-width: 1550px;
+        width: 100%;
+        margin-inline: auto;
+      }
+      @media (min-width: 960px) and (min-height: 660px) {
+        .hub {
+          height: 100dvh;
+        }
+        .tiles:not(.overflow) {
+          overflow: hidden;
+        }
+        .tiles:not(.overflow) .game {
+          max-height: 100%;
+        }
+        .tiles:not(.overflow) .art {
+          aspect-ratio: auto;
+        }
+      }
+      @media (max-width: 900px) {
+        .header {
+          align-items: flex-start;
+        }
+        .purpose {
+          max-width: 450px;
+        }
+        .count {
+          display: none;
+        }
+        .tiles {
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          align-content: start;
+          grid-auto-rows: auto;
+        }
+        .art {
+          aspect-ratio: 16/9 !important;
+        }
+        .game {
+          min-height: 210px;
+        }
+      }
+      @media (max-width: 540px) {
+        .header {
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+        .header-right {
+          margin-left: auto;
+        }
+        .tiles {
+          grid-template-columns: 1fr !important;
+        }
+        .game {
+          min-height: 230px;
+        }
+        .game-name {
+          font-size: 23px;
+        }
+        .purpose {
+          font-size: 12px;
+        }
+      }
+      @media (max-height: 650px) and (min-width: 901px) {
+        .hub {
+          height: auto;
+          min-height: 100dvh;
+        }
+        .tiles {
+          align-content: start;
+          grid-auto-rows: auto;
+        }
+        .art {
+          aspect-ratio: 16/9;
+        }
+      }
+      /* one-message launch splash; no other text or controls */
+      .launch-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 35;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 27px;
+        padding: 26px;
+        text-align: center;
+        background: radial-gradient(
+          ellipse at center,
+          #1a3152 0%,
+          #091428 55%,
+          #050a16 100%
+        );
+        opacity: 1;
+        transition: opacity 0.22s ease;
+      }
+      .launch-splash.vanish {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .launch-message {
+        max-width: 920px;
+        font-size: clamp(23px, 3.2vw, 53px);
+        line-height: 1.19;
+        letter-spacing: -0.035em;
+        font-weight: 850;
+        text-wrap: balance;
+        color: #f7f9ff;
+      }
+      .launch-spinner {
+        width: 44px;
+        height: 44px;
+        border: 4px solid #ffffff30;
+        border-top-color: var(--yellow);
+        border-radius: 50%;
+        animation: launch-spin 0.68s linear infinite;
+      }
+      @keyframes launch-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      /* game viewer */
+      .viewer {
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        background: #030817;
+        display: flex;
+        flex-direction: column;
+      }
+      .viewer-bar {
+        min-height: 61px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        background: #101a30;
+        border-bottom: 1px solid #293c59;
+        padding: 8px 15px;
+      }
+      .viewer-bar strong {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .viewer-buttons {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .action {
+        border: 1px solid #465a78;
+        background: #22344f;
+        color: white;
+        padding: 10px 13px;
+        border-radius: 11px;
+        font-weight: 800;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .back {
+        background: var(--yellow);
+        color: #171e29;
+        border: 0;
+        font-weight: 1000;
+      }
+      .viewer-body {
+        flex: 1;
+        min-height: 0;
+        position: relative;
+      }
+      .viewer-body iframe {
+        border: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: #101b29;
+      }
+      .viewer:fullscreen .viewer-bar {
+        display: none;
+      }
+      /* settings */
+      .scrim {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        background: #02050bd9;
+        display: grid;
+        place-items: center;
+        padding: 15px;
+        backdrop-filter: blur(7px);
+      }
+      .dialog {
+        background: #111d33;
+        border: 1px solid #405676;
+        border-radius: 20px;
+        box-shadow: 0 25px 90px #000a;
+        width: min(770px, 100%);
+        max-height: 93dvh;
+        overflow: auto;
+        padding: clamp(18px, 3vw, 28px);
+      }
+      .dialog-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 16px;
+      }
+      .dialog h2 {
+        margin: 0 0 7px;
+        font-size: 25px;
+      }
+      .sub {
+        font-size: 13px;
+        color: #b6c5dc;
+        line-height: 1.5;
+        margin: 0;
+      }
+      .manage-list {
+        display: grid;
+        gap: 8px;
+        margin: 16px 0;
+      }
+      .manage-row {
+        background: #192a45;
+        border: 1px solid #344b6b;
+        border-radius: 12px;
+        padding: 10px 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .manage-row strong {
+        font-size: 14px;
+      }
+      .manage-row small {
+        display: block;
+        color: #a2b6d2;
+        margin-top: 4px;
+        font-size: 11px;
+        word-break: break-word;
+      }
+      .manage-tools {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .mini {
+        background: #2b405d;
+        border: 1px solid #4b6281;
+        border-radius: 9px;
+        color: white;
+        font-size: 11px;
+        font-weight: 800;
+        padding: 8px 10px;
+      }
+      .mini:hover {
+        background: #3b5678;
+      }
+      .delete {
+        color: #ffb8b8;
+      }
+      .field-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 13px;
+      }
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+      .wide {
+        grid-column: 1/-1;
+      }
+      .field label {
+        font-size: 11px;
+        letter-spacing: 0.11em;
+        color: #c0d1ea;
+        text-transform: uppercase;
+        font-weight: 900;
+      }
+      .field input {
+        background: #08152b;
+        border: 1px solid #3d5779;
+        color: white;
+        padding: 11px;
+        border-radius: 10px;
+        width: 100%;
+        min-width: 0;
+      }
+      .row-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .primary {
+        background: var(--yellow);
+        border: 0;
+        color: #101a2a;
+        border-radius: 10px;
+        font-weight: 950;
+        padding: 11px 15px;
+      }
+      .secondary {
+        border: 1px solid #486485;
+        background: #263954;
+        color: white;
+        border-radius: 10px;
+        font-weight: 850;
+        padding: 11px 15px;
+      }
+      .hint {
+        font-size: 12px;
+        color: #a5b9d2;
+        line-height: 1.5;
+      }
+      .divider {
+        border: 0;
+        border-top: 1px solid #334865;
+        margin: 22px 0;
+      }
+      .filepick {
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+      }
+      .filepick input {
+        display: none;
+      }
+      .toast {
+        position: fixed;
+        z-index: 70;
+        left: 50%;
+        bottom: 24px;
+        transform: translateX(-50%);
+        background: var(--yellow);
+        color: #101822;
+        border-radius: 12px;
+        padding: 12px 20px;
+        font-weight: 900;
+        font-size: 13px;
+        box-shadow: 0 12px 36px #0009;
+      }
+      @media (max-width: 620px) {
+        .field-grid {
+          grid-template-columns: 1fr;
+        }
+        .viewer-bar {
+          flex-wrap: wrap;
+        }
+        .viewer-buttons {
+          width: 100%;
+        }
+        .viewer-bar strong {
+          display: none;
+        }
+        .action {
+          padding: 10px 9px;
+        }
+        .manage-row {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+      /* STEM Fest message is the visual center of the header, between school branding and settings. */
+      .header {
+        display: grid;
+        grid-template-columns: minmax(195px, 285px) minmax(0, 1fr) auto;
+        gap: clamp(12px, 1.8vw, 28px);
+        align-items: center;
+        min-height: 88px;
+      }
+      .identity {
+        gap: 10px;
+        min-width: 0;
+      }
+      .brand-logo {
+        width: clamp(43px, 3.9vw, 59px);
+        height: clamp(43px, 3.9vw, 59px);
+      }
+      .festival {
+        font-size: clamp(25px, 2.25vw, 38px);
+      }
+      .school {
+        font-size: clamp(9px, 0.73vw, 11px);
+        letter-spacing: 0.055em;
+        line-height: 1.3;
+        margin-top: 5px;
+      }
+      .headline {
+        text-align: center;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        padding: 4px 0;
+      }
+      .headline-primary {
+        color: var(--yellow);
+        font-size: clamp(19px, 1.85vw, 31px);
+        font-weight: 950;
+        letter-spacing: -0.035em;
+        line-height: 1.12;
+        text-wrap: balance;
+      }
+      .headline-secondary {
+        color: #f8fbff;
+        font-size: clamp(13px, 1.13vw, 19px);
+        font-weight: 730;
+        line-height: 1.26;
+        text-wrap: balance;
+      }
+      .header-right {
+        gap: 8px;
+      }
+      .count {
+        padding: 8px 10px;
+        font-size: 11px;
+      }
+      .manage {
+        padding: 11px 12px;
+      }
+      @media (max-width: 1100px) {
+        .header {
+          grid-template-columns: minmax(155px, 225px) minmax(0, 1fr) auto;
+          gap: 12px;
+        }
+        .count {
+          display: none;
+        }
+        .headline-primary {
+          font-size: clamp(18px, 2.2vw, 25px);
+        }
+        .headline-secondary {
+          font-size: clamp(12px, 1.45vw, 16px);
+        }
+        .brand-logo {
+          width: 46px;
+          height: 46px;
+        }
+      }
+      @media (max-width: 740px) {
+        .header {
+          grid-template-columns: 1fr auto;
+          gap: 9px 12px;
+          align-items: center;
+        }
+        .identity {
+          grid-column: 1;
+        }
+        .header-right {
+          grid-column: 2;
+          grid-row: 1;
+        }
+        .headline {
+          grid-column: 1/-1;
+          grid-row: 2;
+          padding: 7px 0 3px;
+          gap: 4px;
+        }
+        .headline-primary {
+          font-size: clamp(21px, 4.2vw, 28px);
+        }
+        .headline-secondary {
+          font-size: clamp(13px, 2.6vw, 17px);
+        }
+        .header .manage {
+          padding: 9px 10px;
+          font-size: 11px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *:before,
+        *:after {
+          transition: none !important;
+        }
+      }
 
-    const play = make('div','play');
-    play.append(make('span','','▶ PLAY NOW'));
-    art.append(play);
-
-    const foot = make('div','game-info');
-    const title = make('div','game-name',g.title);
-    title.style.minWidth = '0';
-
-    // ONLY THE GAME NAME IS DISPLAYED.
-    // NO "BROWSER GAME" OR CATEGORY LABEL.
-    foot.append(title,make('div','arrow','↗'));
-
-    card.append(art,foot);
-
-    card.addEventListener('click',()=>{
-      if (activeId === null) launch(g.id);
-    });
-
-    card.addEventListener('keydown',e=>{
-      if (activeId !== null) return;
-      if ((e.key === 'Enter' || e.key === ' ') && !e.repeat) {
+      /* STEM Fest v.11: center incomplete final rows without stretching cards. */
+      .hub {
+        height: auto !important;
+        min-height: 100dvh;
+      }
+      .tiles,
+      .tiles.overflow {
+        display: flex !important;
+        flex: none;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: flex-start;
+        align-items: stretch;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 auto;
+        min-height: 0;
+        overflow: visible !important;
+        gap: 18px;
+      }
+      .tiles > .game {
+        flex: 0 0 calc((100% - 54px) / 4);
+        width: calc((100% - 54px) / 4);
+        height: auto !important;
+        min-height: 0;
+        max-height: none !important;
+      }
+      .tiles > .game > .art {
+        flex: 0 0 auto;
+        width: 100%;
+        aspect-ratio: 16 / 9 !important;
+      }
+      @media (max-width: 1100px) {
+        .tiles > .game {
+          flex-basis: calc((100% - 36px) / 3);
+          width: calc((100% - 36px) / 3);
+        }
+      }
+      @media (max-width: 800px) {
+        .tiles > .game {
+          flex-basis: calc((100% - 18px) / 2);
+          width: calc((100% - 18px) / 2);
+        }
+      }
+      @media (max-width: 540px) {
+        .tiles > .game {
+          flex-basis: 100%;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="hub" class="hub">
+      <header class="header">
+        <div class="identity">
+          <img
+            class="brand-logo"
+            src="screenshots/frontier-logo.png"
+            alt="Frontier Schools logo"
+            id="schoolLogo"
+          />
+          <div class="school-identity">
+            <div class="festival">STEM <em>Fest</em></div>
+            <div class="school">Frontier Schools Kansas City</div>
+          </div>
+        </div>
+        <div
+          class="headline"
+          aria-label="All Games Created by Students Using the Knowledge and Skills Gained at Frontier Schools."
+        >
+          <div class="headline-primary">All Games Created by Students</div>
+          <div class="headline-secondary">
+            Using the Knowledge and Skills Gained at Frontier Schools.
+          </div>
+        </div>
+        <div class="header-right">
+          <span class="count" id="count">0 GAMES</span
+          ><button
+            class="manage"
+            id="manageBtn"
+            type="button"
+            title="Local game settings"
+          >
+            ⚙ Manage Games
+          </button>
+        </div>
+      </header>
+      <section class="tiles" id="tiles" aria-label="Choose a game"></section>
+    </main>
+    <div
+      class="launch-splash hidden"
+      id="launchSplash"
+      role="status"
+      aria-live="polite"
+    >
+      <div class="launch-message">
+        Created by Students Using the Knowledge Gained at Frontier Schools.
+      </div>
+      <div class="launch-spinner" aria-label="Loading"></div>
+    </div>
+    <div class="viewer hidden" id="viewer">
+      <div class="viewer-bar">
+        <button id="back" class="action back">← ALL GAMES</button
+        ><strong id="playingTitle"></strong>
+        <div class="viewer-buttons">
+          <button class="action" id="restart">↻ RESTART</button
+          ><button class="action" id="full">⛶ FULL SCREEN</button>
+        </div>
+      </div>
+      <div class="viewer-body">
+        <iframe
+          id="frame"
+          title="Game"
+          tabindex="-1"
+          allow="fullscreen; gamepad; autoplay; serial"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+    <div class="scrim hidden" id="scrim">
+      <div
+        class="dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+      >
+        <div class="dialog-top">
+          <div>
+            <h2 id="dialogTitle">⚙ Manage Games</h2>
+            <p class="sub" id="modeNote">
+              Shared games for everyone. Emergency changes can be saved on this
+              computer.
+            </p>
+          </div>
+          <button class="mini" id="closeManager">✕ Close</button>
+        </div>
+        <div class="manage-list" id="manageList"></div>
+        <div class="row-actions">
+          <button class="secondary" id="newGame">＋ ADD GAME</button
+          ><button class="secondary" id="sharedReset">
+            ↻ RESTORE SHARED LIST
+          </button>
+        </div>
+        <hr class="divider" />
+        <h3 id="formHeading">Add a game</h3>
+        <form id="form">
+          <div class="field-grid">
+            <div class="field">
+              <label for="gameName">Name *</label
+              ><input
+                id="gameName"
+                required
+                maxlength="75"
+                placeholder="Shark Parkour"
+              />
+            </div>
+            <div class="field">
+              <label for="category">Category</label
+              ><input
+                id="category"
+                maxlength="38"
+                placeholder="Action / Parkour"
+              />
+            </div>
+            <div class="field wide">
+              <label for="gameUrl">GitHub Pages URL *</label
+              ><input
+                id="gameUrl"
+                type="url"
+                placeholder="https://username.github.io/game/"
+              />
+            </div>
+            <div class="field">
+              <label for="gameEmoji">Emoji when no screenshot</label
+              ><input id="gameEmoji" maxlength="8" placeholder="🎮" />
+            </div>
+            <div class="field">
+              <label for="gameColor">Background</label
+              ><input
+                id="gameColor"
+                type="color"
+                value="#24648d"
+                style="height: 44px; padding: 4px"
+              />
+            </div>
+            <div class="field wide">
+              <label for="gameImage">Screenshot path / URL</label
+              ><input
+                id="gameImage"
+                placeholder="screenshots/shark-parkour.png"
+              />
+            </div>
+            <div class="field wide">
+              <label for="imageUpload">Or upload screenshot (local only)</label
+              ><input
+                id="imageUpload"
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+              /><span class="hint"
+                >Uploaded screenshots stay in this browser unless you export the
+                list to games.json. For shared screenshots, put images in
+                screenshots/ and use their paths.</span
+              >
+            </div>
+          </div>
+          <div class="row-actions">
+            <button class="primary" id="saveBtn" type="submit">SAVE GAME</button
+            ><button class="secondary" id="clearForm" type="button">
+              CLEAR
+            </button>
+          </div>
+        </form>
+        <hr class="divider" />
+        <div class="row-actions">
+          <button class="secondary" id="export" type="button">
+            ↓ EXPORT games.json</button
+          ><label class="secondary filepick"
+            >↑ IMPORT JSON
+            <input id="importFile" type="file" accept=".json,application/json"
+          /></label>
+        </div>
+        <p class="hint">
+          Games normally load from shared games.json. Local emergency edits
+          apply only to this browser and remain after refreshing. Use RESTORE
+          SHARED LIST to remove your local override. To update all 100
+          computers, publish the exported games.json to GitHub Pages.
+        </p>
+      </div>
+    </div>
+    <div class="toast hidden" id="toast" role="status"></div>
+    <script>
+      "use strict";
+      // Update this string when publishing changed HTML/CSS/JS. Other devices detect the release and reload automatically.
+      const BUILD_VERSION = "stemfest-2026-11-19.11";
+      // Change this number to control the intro duration in milliseconds. 2500 = 2.5 seconds.
+      const LOADING_SCREEN_MS = 2500;
+      const STORE = "frontier.stemfest.override.v4";
+      const $ = (id) => document.getElementById(id);
+      const DEMO = [
+        {
+          id: "shark-parkour",
+          title: "Shark Parkour",
+          category: "Action / Parkour",
+          url: "",
+          image: "",
+          emoji: "🦈",
+          color: "#0d7792",
+        },
+        {
+          id: "exponent-quest",
+          title: "Exponent Quest",
+          category: "Math / Adventure",
+          url: "",
+          image: "",
+          emoji: "⚔️",
+          color: "#6247a3",
+        },
+        {
+          id: "space-landing",
+          title: "Space Landing",
+          category: "Space / Skills",
+          url: "",
+          image: "",
+          emoji: "🚀",
+          color: "#ac5937",
+        },
+      ];
+      let games = [],
+        sharedGames = [],
+        sharedVersion = "",
+        override = false,
+        activeId = null,
+        editingId = null,
+        queuedRefresh = null,
+        toastTimer = null,
+        launchTimer = null,
+        splashTimer = null;
+      const idNew = () =>
+        "game-" +
+        Date.now().toString(36) +
+        "-" +
+        Math.random().toString(36).slice(2, 8);
+      const urlLabel = (url) => {
+        try {
+          const u = new URL(url);
+          let text = decodeURIComponent(
+            u.pathname.split("/").filter(Boolean).pop() ||
+              u.hostname.split(".")[0],
+          );
+          return (
+            text
+              .replace(/\.(html?|php)$/i, "")
+              .replace(/[-_]+/g, " ")
+              .replace(/\b\w/g, (c) => c.toUpperCase()) || "Browser Game"
+          );
+        } catch {
+          return "Browser Game";
+        }
+      };
+      const stableId = (url) => {
+        let h = 2166136261;
+        for (const c of url) {
+          h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+        }
+        return "url-" + (h >>> 0).toString(36);
+      };
+      const normalize = (g) => {
+        if (typeof g === "string") g = { url: g };
+        const url = String(g.url || "").trim();
+        return {
+          id: String(g.id || stableId(url)),
+          title: String(g.title || urlLabel(url)),
+          category: String(g.category || "Browser Game"),
+          url,
+          image: String(g.image || ""),
+          emoji: String(g.emoji || "🎮"),
+          color: /^#[0-9a-fA-F]{6}$/.test(g.color) ? g.color : "#24648d",
+          autoTitle: !String(g.title || "").trim(),
+        };
+      };
+      // A remote GitHub Pages site normally cannot be read across origins without CORS.
+      // Try its <title> when permitted; otherwise use the name from its URL.
+      async function findGameTitle(g) {
+        if (!g.autoTitle || !safeUrl(g.url)) return;
+        try {
+          const r = await fetch(g.url, { signal: AbortSignal.timeout(4500) });
+          if (!r.ok) return;
+          const html = await r.text();
+          const match = html.match(/<title[^>]*>([^<]{1,140})<\/title>/i);
+          if (!match) return;
+          const div = document.createElement("textarea");
+          div.innerHTML = match[1];
+          const found = div.value.trim();
+          if (found) {
+            g.title = found;
+            render();
+          }
+        } catch {
+          /* Cross-origin websites commonly prohibit fetching HTML. */
+        }
+      }
+      const safeUrl = (s) => {
+        try {
+          const u = new URL(s, location.href);
+          return ["https:", "http:"].includes(u.protocol) ? u.href : "";
+        } catch {
+          return "";
+        }
+      };
+      const noCache = (url) => {
+        const u = new URL(url, location.href);
+        u.searchParams.set("_stemfresh", Date.now().toString());
+        return u.href;
+      };
+      function notify(str) {
+        const t = $("toast");
+        t.textContent = str;
+        t.classList.remove("hidden");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => t.classList.add("hidden"), 3200);
+      }
+      function saved() {
+        try {
+          const raw = localStorage.getItem(STORE);
+          if (raw === null) return null;
+          const value = JSON.parse(raw);
+          return Array.isArray(value) ? value.map(normalize) : null;
+        } catch {
+          return null;
+        }
+      }
+      function persist() {
+        try {
+          localStorage.setItem(STORE, JSON.stringify(games));
+          override = true;
+          updateMode();
+          return true;
+        } catch {
+          notify("Storage full. Export JSON to save your list.");
+          return false;
+        }
+      }
+      function updateMode() {
+        $("modeNote").textContent = override
+          ? "LOCAL OVERRIDE: your changes apply to this computer only."
+          : "SHARED LIST: games are loaded from games.json for every computer.";
+      }
+      async function getShared() {
+        try {
+          const r = await fetch(noCache("./games.json"), { cache: "no-store" });
+          if (!r.ok) return null;
+          const data = await r.json();
+          const list = Array.isArray(data) ? data : data.games;
+          if (!Array.isArray(list)) return null;
+          return {
+            version: String(data.version || ""),
+            games: list.map(normalize),
+          };
+        } catch {
+          return null;
+        }
+      }
+      function applyShared(data) {
+        if (!data) return;
+        sharedGames = data.games;
+        sharedVersion = data.version;
+        if (!override) {
+          games = sharedGames.map(normalize);
+          render();
+          games.forEach(findGameTitle);
+        }
+        $("sharedReset").disabled = false;
+        updateMode();
+      }
+      async function init() {
+        const local = saved();
+        override = local !== null;
+        games = local || DEMO.map(normalize);
+        render();
+        games.forEach(findGameTitle);
+        updateMode();
+        const data = await getShared();
+        if (data) applyShared(data);
+        else $("sharedReset").disabled = true;
+        setInterval(checkUpdates, 45000);
+        document.addEventListener("visibilitychange", () => {
+          if (!document.hidden) checkUpdates();
+        });
+      }
+      function make(tag, className, txt) {
+        const el = document.createElement(tag);
+        if (className) el.className = className;
+        if (txt !== undefined) el.textContent = txt;
+        return el;
+      }
+      function imageSource(s) {
+        if (s.startsWith("data:image/")) return s;
+        const url = safeUrl(s);
+        if (!url) return "";
+        const u = new URL(url);
+        if (u.origin === location.origin && !s.startsWith("data:"))
+          u.searchParams.set("v", sharedVersion || BUILD_VERSION);
+        return u.href;
+      }
+      function cols(n) {
+        const w = window.innerWidth;
+        if (w <= 900) return w <= 540 ? 1 : 2;
+        if (n <= 1) return 1;
+        if (n === 2) return 2;
+        if (n <= 3) return 3;
+        if (n <= 4) return 2;
+        if (n <= 6) return 3;
+        if (n <= 8) return 4;
+        return 4;
+      }
+      function render() {
+        const root = $("tiles");
+        root.replaceChildren();
+        const n = games.length;
+        root.dataset.count = String(n);
+        $("count").textContent = n + " " + (n === 1 ? "GAME" : "GAMES");
+        const c = cols(n);
+        root.style.setProperty("--cols", c);
+        root.classList.toggle("overflow", n > c * 2);
+        if (!n) {
+          root.append(
+            make(
+              "div",
+              "empty",
+              "No games available. Select Manage Games to add one.",
+            ),
+          );
+          return;
+        }
+        for (const g of games) {
+          const card = make("article", "game");
+          card.tabIndex = 0;
+          card.setAttribute("role", "button");
+          card.setAttribute("aria-label", "Play " + g.title);
+          const art = make("div", "art");
+          art.style.setProperty("--tone", g.color);
+          const emoji = make("span", "emoji", g.emoji);
+          art.append(emoji);
+          if (g.image) {
+            const src = imageSource(g.image);
+            if (src) {
+              const img = make("img");
+              img.src = src;
+              img.alt = "Screenshot: " + g.title;
+              img.loading = "lazy";
+              img.onerror = () => img.remove();
+              art.append(img);
+            }
+          }
+          const play = make("div", "play");
+          play.append(make("span", "", "▶ PLAY NOW"));
+          art.append(play);
+          const foot = make("div", "game-info");
+          const text = make("div");
+          text.style.minWidth = "0";
+          text.append(make("div", "game-name", g.title));
+          foot.append(text, make("div", "arrow", "↗"));
+          card.append(art, foot);
+          card.addEventListener("click", () => {
+            if (activeId === null) launch(g.id);
+          });
+          card.addEventListener("keydown", (e) => {
+            if (activeId !== null) return;
+            if ((e.key === "Enter" || e.key === " ") && !e.repeat) {
+              e.preventDefault();
+              e.stopPropagation();
+              launch(g.id);
+            }
+          });
+          root.append(card);
+        }
+      }
+      window.addEventListener("resize", () => {
+        const c = cols(games.length);
+        $("tiles").style.setProperty("--cols", c);
+        $("tiles").classList.toggle("overflow", games.length > c * 2);
+      });
+      function focusGame() {
+        if (activeId === null) return;
+        const frame = $("frame");
+        try {
+          frame.focus({ preventScroll: true });
+          frame.contentWindow?.focus();
+        } catch {
+          try {
+            frame.focus();
+          } catch {}
+        }
+      }
+      function launch(id) {
+        if (activeId !== null) return;
+        const g = games.find((x) => x.id === id);
+        if (!g) return;
+        const url = safeUrl(g.url);
+        if (!url) {
+          notify(
+            "Add the GitHub Pages URL for this example game in Manage Games.",
+          );
+          return;
+        }
+        clearTimeout(launchTimer);
+        clearTimeout(splashTimer);
+        if (
+          document.activeElement &&
+          typeof document.activeElement.blur === "function"
+        )
+          document.activeElement.blur();
+        activeId = id;
+        $("hub").inert = true;
+        document.body.style.overflow = "hidden";
+        $("playingTitle").textContent = g.title;
+        const splash = $("launchSplash");
+        splash.classList.remove("hidden", "vanish");
+        $("viewer").classList.add("hidden");
+        $("frame").src = "about:blank";
+        launchTimer = setTimeout(() => {
+          if (activeId !== id) return;
+          $("viewer").classList.remove("hidden");
+          $("frame").src = url;
+          splash.classList.add("vanish");
+          splashTimer = setTimeout(() => {
+            splash.classList.add("hidden");
+            focusGame();
+          }, 240);
+        }, LOADING_SCREEN_MS);
+      }
+      $("frame").addEventListener("load", () => {
+        if (activeId !== null && !$("viewer").classList.contains("hidden"))
+          focusGame();
+      });
+      function leave() {
+        clearTimeout(launchTimer);
+        clearTimeout(splashTimer);
+        $("launchSplash").classList.add("hidden");
+        activeId = null;
+        $("hub").inert = false;
+        $("frame").src = "about:blank";
+        $("viewer").classList.add("hidden");
+        document.body.style.overflow = "";
+        if (document.fullscreenElement)
+          document.exitFullscreen().catch(() => {});
+        if (queuedRefresh) {
+          const pending = queuedRefresh;
+          queuedRefresh = null;
+          if (pending.reload) reloadPage();
+          else applyShared(pending.data);
+        }
+      }
+      $("back").onclick = leave;
+      $("restart").onclick = () => {
+        const g = games.find((x) => x.id === activeId);
+        if (g) {
+          $("frame").src = "about:blank";
+          setTimeout(() => {
+            if (activeId === g.id) {
+              $("frame").src = safeUrl(g.url);
+              focusGame();
+            }
+          }, 80);
+        }
+      };
+      $("full").onclick = async () => {
+        try {
+          if (document.fullscreenElement) await document.exitFullscreen();
+          else await $("viewer").requestFullscreen();
+        } catch {
+          notify("Fullscreen unavailable in this browser");
+        }
+      };
+      function reloadPage() {
+        const u = new URL(location.href);
+        u.searchParams.set("hub_version", Date.now().toString());
+        location.replace(u.href);
+      }
+      async function checkUpdates() {
+        if (document.hidden) return;
+        try {
+          const [data, remoteHtml] = await Promise.all([
+            getShared(),
+            fetch(noCache("./index.html"), { cache: "no-store" })
+              .then((r) => (r.ok ? r.text() : ""))
+              .catch(() => ""),
+          ]);
+          const remoteVersion = remoteHtml.match(
+            /const BUILD_VERSION='([^']+)'/,
+          );
+          if (remoteVersion && remoteVersion[1] !== BUILD_VERSION) {
+            if (activeId) queuedRefresh = { reload: true };
+            else reloadPage();
+            return;
+          }
+          if (
+            data &&
+            (data.version !== sharedVersion ||
+              JSON.stringify(data.games) !== JSON.stringify(sharedGames))
+          ) {
+            if (activeId) queuedRefresh = { reload: false, data };
+            else applyShared(data);
+          }
+        } catch {}
+      }
+      function openManager() {
+        $("scrim").classList.remove("hidden");
+        renderManager();
+        clearEditor();
+      }
+      function closeManager() {
+        $("scrim").classList.add("hidden");
+        render();
+      }
+      $("manageBtn").onclick = openManager;
+      $("closeManager").onclick = closeManager;
+      $("scrim").addEventListener("click", (e) => {
+        if (e.target === $("scrim")) closeManager();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !$("scrim").classList.contains("hidden"))
+          closeManager();
+      });
+      function renderManager() {
+        const root = $("manageList");
+        root.replaceChildren();
+        for (let i = 0; i < games.length; i++) {
+          const g = games[i],
+            line = make("div", "manage-row"),
+            info = make("div");
+          info.style.minWidth = "0";
+          info.append(
+            make("strong", "", g.title),
+            make("small", "", g.url || "Example: add URL before playing"),
+          );
+          const buttons = make("div", "manage-tools");
+          function btn(t, fn, cls = "") {
+            const b = make("button", "mini " + cls, t);
+            b.type = "button";
+            b.onclick = fn;
+            buttons.append(b);
+          }
+          btn("↑", () => move(i, -1));
+          btn("↓", () => move(i, 1));
+          btn("EDIT", () => edit(g.id));
+          btn("✕", () => remove(g.id), "delete");
+          line.append(info, buttons);
+          root.append(line);
+        }
+        if (!games.length) root.append(make("p", "sub", "No games yet."));
+      }
+      function move(i, d) {
+        const j = i + d;
+        if (j < 0 || j >= games.length) return;
+        [games[i], games[j]] = [games[j], games[i]];
+        persist();
+        renderManager();
+        render();
+      }
+      function remove(id) {
+        const g = games.find((x) => x.id === id);
+        if (!g || !confirm("Remove " + g.title + " from this computer?"))
+          return;
+        games = games.filter((x) => x.id !== id);
+        persist();
+        renderManager();
+        render();
+        clearEditor();
+        notify("Game removed locally");
+      }
+      function clearEditor() {
+        editingId = null;
+        $("form").reset();
+        $("gameColor").value = "#24648d";
+        $("formHeading").textContent = "Add a game";
+        $("saveBtn").textContent = "SAVE GAME";
+      }
+      $("newGame").onclick = () => {
+        clearEditor();
+        $("gameName").focus();
+      };
+      $("clearForm").onclick = clearEditor;
+      function edit(id) {
+        const g = games.find((x) => x.id === id);
+        if (!g) return;
+        editingId = id;
+        $("gameName").value = g.title;
+        $("category").value = g.category;
+        $("gameUrl").value = g.url;
+        $("gameEmoji").value = g.emoji;
+        $("gameColor").value = g.color;
+        $("gameImage").value = g.image.startsWith("data:") ? "" : g.image;
+        $("imageUpload").value = "";
+        $("formHeading").textContent = "Edit game: " + g.title;
+        $("saveBtn").textContent = "SAVE CHANGES";
+        $("formHeading").scrollIntoView({ block: "nearest" });
+      }
+      function resize(file) {
+        return new Promise((ok, fail) => {
+          if (!file.type.startsWith("image/"))
+            return fail(Error("Not an image"));
+          const u = URL.createObjectURL(file),
+            im = new Image();
+          im.onload = () => {
+            const s = Math.min(1, 900 / im.width, 560 / im.height),
+              c = document.createElement("canvas");
+            c.width = Math.round(im.width * s);
+            c.height = Math.round(im.height * s);
+            c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+            URL.revokeObjectURL(u);
+            ok(c.toDataURL("image/jpeg", 0.72));
+          };
+          im.onerror = () => {
+            URL.revokeObjectURL(u);
+            fail(Error("Cannot load image"));
+          };
+          im.src = u;
+        });
+      }
+      $("form").onsubmit = async (e) => {
         e.preventDefault();
-        e.stopPropagation();
-        launch(g.id);
+        const old = games.find((g) => g.id === editingId);
+        let image = $("gameImage").value.trim() || old?.image || "";
+        const file = $("imageUpload").files[0];
+        if (file) {
+          try {
+            image = await resize(file);
+          } catch (err) {
+            notify(err.message);
+            return;
+          }
+        }
+        const g = normalize({
+          id: editingId || idNew(),
+          title: $("gameName").value.trim(),
+          category: $("category").value.trim(),
+          url: $("gameUrl").value.trim(),
+          emoji: $("gameEmoji").value.trim(),
+          color: $("gameColor").value,
+          image,
+        });
+        if (g.url && !safeUrl(g.url)) {
+          notify("Enter a valid http(s) URL");
+          return;
+        }
+        if (image && !image.startsWith("data:image/") && !safeUrl(image)) {
+          notify("Enter a valid screenshot path / URL");
+          return;
+        }
+        if (editingId) games = games.map((x) => (x.id === editingId ? g : x));
+        else games.push(g);
+        if (!persist()) return;
+        renderManager();
+        render();
+        clearEditor();
+        notify("Saved on this computer");
+      };
+      function download(text, name) {
+        const b = new Blob([text], { type: "application/json" }),
+          u = URL.createObjectURL(b),
+          a = document.createElement("a");
+        a.href = u;
+        a.download = name;
+        document.body.append(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(u), 1000);
       }
-    });
-
-    root.append(card);
-  }
-}
-
-window.addEventListener('resize',()=>{
-  const c = cols(games.length);
-  $('tiles').style.setProperty('--cols',c);
-  $('tiles').classList.toggle('overflow',games.length > c*2);
-});
-
-function focusGame() {
-  if (activeId === null) return;
-  const frame = $('frame');
-  try {
-    frame.focus({preventScroll:true});
-    frame.contentWindow?.focus();
-  } catch {
-    try { frame.focus(); } catch {}
-  }
-}
-
-function launch(id) {
-  if (activeId !== null) return;
-
-  const g = games.find(x=>x.id === id);
-  if (!g) return;
-
-  const url = safeUrl(g.url);
-  if (!url) {
-    notify('Add the GitHub Pages URL in Manage Games.');
-    return;
-  }
-
-  clearTimeout(launchTimer);
-  clearTimeout(splashTimer);
-
-  if (document.activeElement?.blur) {
-    document.activeElement.blur();
-  }
-
-  activeId = id;
-  $('hub').inert = true;
-  document.body.style.overflow = 'hidden';
-  $('playingTitle').textContent = g.title;
-
-  const splash = $('launchSplash');
-  splash.classList.remove('hidden','vanish');
-  $('viewer').classList.add('hidden');
-  $('frame').src = 'about:blank';
-
-  launchTimer = setTimeout(()=>{
-    if (activeId !== id) return;
-
-    $('viewer').classList.remove('hidden');
-    $('frame').src = url;
-    splash.classList.add('vanish');
-
-    splashTimer = setTimeout(()=>{
-      splash.classList.add('hidden');
-      focusGame();
-    },240);
-
-  },LOADING_SCREEN_MS);
-}
-
-$('frame').addEventListener('load',()=>{
-  if (activeId !== null &&
-      !$('viewer').classList.contains('hidden')) {
-    focusGame();
-  }
-});
-
-function leave() {
-  clearTimeout(launchTimer);
-  clearTimeout(splashTimer);
-
-  $('launchSplash').classList.add('hidden');
-  activeId = null;
-  $('hub').inert = false;
-
-  $('frame').src = 'about:blank';
-  $('viewer').classList.add('hidden');
-  document.body.style.overflow = '';
-
-  if (document.fullscreenElement) {
-    document.exitFullscreen().catch(()=>{});
-  }
-
-  if (queuedRefresh) {
-    const pending = queuedRefresh;
-    queuedRefresh = null;
-
-    if (pending.reload) reloadPage();
-    else applyShared(pending.data);
-  }
-}
-
-$('back').onclick = leave;
-
-$('restart').onclick = ()=>{
-  const g = games.find(x=>x.id === activeId);
-  if (!g) return;
-
-  $('frame').src = 'about:blank';
-
-  setTimeout(()=>{
-    if (activeId === g.id) {
-      $('frame').src = safeUrl(g.url);
-      focusGame();
-    }
-  },80);
-};
-
-$('full').onclick = async ()=>{
-  try {
-    if (document.fullscreenElement) {
-      await document.exitFullscreen();
-    } else {
-      await $('viewer').requestFullscreen();
-    }
-  } catch {
-    notify('Fullscreen unavailable in this browser');
-  }
-};
-
-function reloadPage() {
-  const u = new URL(location.href);
-  u.searchParams.set('hub_version',Date.now().toString());
-  location.replace(u.href);
-}
-
-async function checkUpdates() {
-  if (document.hidden) return;
-
-  try {
-    const [data,remoteHtml] = await Promise.all([
-      getShared(),
-      fetch(noCache('./index.html'),{cache:'no-store'})
-        .then(r=>r.ok ? r.text() : '')
-        .catch(()=>'')
-    ]);
-
-    const remoteVersion = remoteHtml.match(
-      /const BUILD_VERSION\s*=\s*'([^']+)'/
-    );
-
-    if (remoteVersion && remoteVersion[1] !== BUILD_VERSION) {
-      if (activeId) queuedRefresh = {reload:true};
-      else reloadPage();
-      return;
-    }
-
-    if (data &&
-        (data.version !== sharedVersion ||
-         JSON.stringify(data.games) !== JSON.stringify(sharedGames))) {
-      if (activeId) queuedRefresh = {reload:false,data};
-      else applyShared(data);
-    }
-  } catch {}
-}
-
-/* ADMIN PANEL */
-function openManager() {
-  $('scrim').classList.remove('hidden');
-  renderManager();
-  clearEditor();
-}
-
-function closeManager() {
-  $('scrim').classList.add('hidden');
-  render();
-}
-
-$('manageBtn').onclick = openManager;
-$('closeManager').onclick = closeManager;
-
-$('scrim').addEventListener('click',e=>{
-  if (e.target === $('scrim')) closeManager();
-});
-
-document.addEventListener('keydown',e=>{
-  if (e.key === 'Escape' &&
-      !$('scrim').classList.contains('hidden')) {
-    closeManager();
-  }
-});
-
-function renderManager() {
-  const root = $('manageList');
-  root.replaceChildren();
-
-  for (let i=0;i<games.length;i++) {
-    const g = games[i];
-    const line = make('div','manage-row');
-    const info = make('div');
-
-    info.style.minWidth = '0';
-    info.append(
-      make('strong','',g.title),
-      make('small','',g.url || 'No URL')
-    );
-
-    const buttons = make('div','manage-tools');
-
-    function btn(t,fn,cls='') {
-      const b = make('button','mini '+cls,t);
-      b.type = 'button';
-      b.onclick = fn;
-      buttons.append(b);
-    }
-
-    btn('↑',()=>move(i,-1));
-    btn('↓',()=>move(i,1));
-    btn('EDIT',()=>edit(g.id));
-    btn('✕',()=>remove(g.id),'delete');
-
-    line.append(info,buttons);
-    root.append(line);
-  }
-
-  if (!games.length) {
-    root.append(make('p','sub','No games yet.'));
-  }
-}
-
-function move(i,d) {
-  const j = i+d;
-  if (j<0 || j>=games.length) return;
-
-  [games[i],games[j]] = [games[j],games[i]];
-  persist();
-  renderManager();
-  render();
-}
-
-function remove(id) {
-  const g = games.find(x=>x.id===id);
-  if (!g || !confirm('Remove '+g.title+' from this computer?')) return;
-
-  games = games.filter(x=>x.id!==id);
-  persist();
-  renderManager();
-  render();
-  clearEditor();
-  notify('Game removed locally');
-}
-
-function clearEditor() {
-  editingId = null;
-  $('form').reset();
-  $('gameColor').value = '#24648d';
-  $('formHeading').textContent = 'Add a game';
-  $('saveBtn').textContent = 'SAVE GAME';
-}
-
-$('newGame').onclick = ()=>{
-  clearEditor();
-  $('gameName').focus();
-};
-
-$('clearForm').onclick = clearEditor;
-
-function edit(id) {
-  const g = games.find(x=>x.id===id);
-  if (!g) return;
-
-  editingId = id;
-  $('gameName').value = g.title;
-  $('category').value = g.category;
-  $('gameUrl').value = g.url;
-  $('gameEmoji').value = g.emoji;
-  $('gameColor').value = g.color;
-  $('gameImage').value = g.image.startsWith('data:') ? '' : g.image;
-  $('imageUpload').value = '';
-
-  $('formHeading').textContent = 'Edit game: '+g.title;
-  $('saveBtn').textContent = 'SAVE CHANGES';
-  $('formHeading').scrollIntoView({block:'nearest'});
-}
-
-function resize(file) {
-  return new Promise((ok,fail)=>{
-    if (!file.type.startsWith('image/')) {
-      return fail(Error('Not an image'));
-    }
-
-    const u = URL.createObjectURL(file);
-    const im = new Image();
-
-    im.onload = ()=>{
-      const s = Math.min(1,900/im.width,560/im.height);
-      const c = document.createElement('canvas');
-      c.width = Math.round(im.width*s);
-      c.height = Math.round(im.height*s);
-      c.getContext('2d').drawImage(im,0,0,c.width,c.height);
-      URL.revokeObjectURL(u);
-      ok(c.toDataURL('image/jpeg',.72));
-    };
-
-    im.onerror = ()=>{
-      URL.revokeObjectURL(u);
-      fail(Error('Cannot load image'));
-    };
-
-    im.src = u;
-  });
-}
-
-$('form').onsubmit = async e=>{
-  e.preventDefault();
-
-  const old = games.find(g=>g.id===editingId);
-  let image = $('gameImage').value.trim() || (old?.image || '');
-  const file = $('imageUpload').files[0];
-
-  if (file) {
-    try {
-      image = await resize(file);
-    } catch(err) {
-      notify(err.message);
-      return;
-    }
-  }
-
-  const g = normalize({
-    id:editingId || idNew(),
-    title:$('gameName').value.trim(),
-    category:$('category').value.trim(),
-    url:$('gameUrl').value.trim(),
-    emoji:$('gameEmoji').value.trim(),
-    color:$('gameColor').value,
-    image
-  });
-
-  if (g.url && !safeUrl(g.url)) {
-    notify('Enter a valid URL');
-    return;
-  }
-
-  if (image && !image.startsWith('data:image/') && !safeUrl(image)) {
-    notify('Enter a valid screenshot path / URL');
-    return;
-  }
-
-  if (editingId) {
-    games = games.map(x=>x.id===editingId ? g : x);
-  } else {
-    games.push(g);
-  }
-
-  if (!persist()) return;
-
-  renderManager();
-  render();
-  clearEditor();
-  notify('Saved on this computer');
-};
-
-function download(text,name) {
-  const b = new Blob([text],{type:'application/json'});
-  const u = URL.createObjectURL(b);
-  const a = document.createElement('a');
-
-  a.href = u;
-  a.download = name;
-  document.body.append(a);
-  a.click();
-  a.remove();
-
-  setTimeout(()=>URL.revokeObjectURL(u),1000);
-}
-
-$('export').onclick = ()=>{
-  const simple = games.map(g=>{
-    const item = {url:g.url};
-    if (!g.autoTitle) item.title = g.title;
-    if (g.image) item.image = g.image;
-    return item;
-  });
-
-  download(JSON.stringify({games:simple},null,2),'games.json');
-  notify('Exported games.json');
-};
-
-$('importFile').onchange = async e=>{
-  const f = e.target.files[0];
-  if (!f) return;
-
-  try {
-    const j = JSON.parse(await f.text());
-    const arr = Array.isArray(j) ? j : j.games;
-
-    if (!Array.isArray(arr)) {
-      throw Error('Invalid games list');
-    }
-
-    if (!confirm('Replace the local game list?')) return;
-
-    games = arr.map(normalize);
-
-    if (persist()) {
-      renderManager();
-      render();
-      games.forEach(findGameTitle);
-      clearEditor();
-      notify('Imported on this computer');
-    }
-  } catch(err) {
-    alert(err.message);
-  } finally {
-    e.target.value = '';
-  }
-};
-
-$('sharedReset').onclick = async ()=>{
-  const d = await getShared();
-
-  if (!d) {
-    notify('Shared games.json is unavailable');
-    return;
-  }
-
-  if (!confirm('Remove local edits and restore shared games?')) return;
-
-  try { localStorage.removeItem(STORE); } catch {}
-
-  override = false;
-  applyShared(d);
-  renderManager();
-  clearEditor();
-  notify('Shared list restored');
-};
-
-init();
-</script>
-</body>
+      $("export").onclick = () => {
+        const simple = games.map((g) => {
+          const item = { url: g.url };
+          if (!g.autoTitle) item.title = g.title;
+          if (g.image) item.image = g.image;
+          return item;
+        });
+        download(JSON.stringify({ games: simple }, null, 2), "games.json");
+        notify("Exported games.json");
+      };
+      $("importFile").onchange = async (e) => {
+        const f = e.target.files[0];
+        if (!f) return;
+        try {
+          const j = JSON.parse(await f.text());
+          const arr = Array.isArray(j) ? j : j.games;
+          if (!Array.isArray(arr)) throw Error("Invalid games list");
+          if (!confirm("Replace the local game list?")) return;
+          games = arr.map(normalize);
+          if (persist()) {
+            renderManager();
+            render();
+            games.forEach(findGameTitle);
+            clearEditor();
+            notify("Imported on this computer");
+          }
+        } catch (err) {
+          alert(err.message);
+        } finally {
+          e.target.value = "";
+        }
+      };
+      $("sharedReset").onclick = async () => {
+        const d = await getShared();
+        if (!d) {
+          notify("Shared games.json is unavailable");
+          return;
+        }
+        if (
+          !confirm(
+            "Remove all local edits and restore shared games on this computer?",
+          )
+        )
+          return;
+        try {
+          localStorage.removeItem(STORE);
+        } catch {}
+        override = false;
+        applyShared(d);
+        renderManager();
+        clearEditor();
+        notify("Shared list restored");
+      };
+      init();
+    </script>
+  </body>
 </html>
