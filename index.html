@@ -783,48 +783,114 @@
         }
       }
 
-      /* STEM Fest v.11: center incomplete final rows without stretching cards. */
-      .hub {
-        height: auto !important;
-        min-height: 100dvh;
-      }
-      .tiles,
-      .tiles.overflow {
-        display: flex !important;
-        flex: none;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-content: flex-start;
-        align-items: stretch;
-        width: 100% !important;
-        max-width: none !important;
-        margin: 0 auto;
-        min-height: 0;
-        overflow: visible !important;
-        gap: 18px;
-      }
-      .tiles > .game {
-        flex: 0 0 calc((100% - 54px) / 4);
-        width: calc((100% - 54px) / 4);
-        height: auto !important;
-        min-height: 0;
-        max-height: none !important;
-      }
-      .tiles > .game > .art {
-        flex: 0 0 auto;
-        width: 100%;
-        aspect-ratio: 16 / 9 !important;
-      }
-      @media (max-width: 1100px) {
+      /* STEM Fest v13: viewport-fit desktop tiles, with centered incomplete rows. */
+      @media (min-width: 901px) and (min-height: 540px) {
+        html,
+        body {
+          height: 100%;
+          overflow: hidden;
+        }
+        .hub {
+          height: 100dvh !important;
+          min-height: 0 !important;
+          overflow: hidden !important;
+          padding-top: 9px;
+          padding-bottom: 9px;
+          gap: 9px;
+        }
+        .header {
+          flex: 0 0 auto;
+          min-height: 0;
+          padding-bottom: 8px;
+        }
+        .tiles,
+        .tiles.overflow {
+          flex: 1 1 0 !important;
+          display: flex !important;
+          flex-wrap: wrap !important;
+          align-content: center !important;
+          align-items: flex-start !important;
+          justify-content: center !important;
+          min-height: 0 !important;
+          max-width: none !important;
+          width: 100% !important;
+          overflow: hidden !important;
+          margin: 0 !important;
+          gap: var(--tile-gap, 10px) !important;
+        }
         .tiles > .game {
-          flex-basis: calc((100% - 36px) / 3);
-          width: calc((100% - 36px) / 3);
+          flex: 0 0
+            calc(
+              (100% - (var(--cols) - 1) * var(--tile-gap, 10px)) / var(--cols)
+            ) !important;
+          width: calc(
+            (100% - (var(--cols) - 1) * var(--tile-gap, 10px)) / var(--cols)
+          ) !important;
+          height: var(--card-height, 175px) !important;
+          min-height: 0 !important;
+          max-height: var(--card-height, 175px) !important;
+          padding: 6px;
+          border-radius: 17px;
+        }
+        .tiles > .game > .art {
+          flex: 1 1 0 !important;
+          width: 100%;
+          min-height: 0 !important;
+          height: auto !important;
+          aspect-ratio: auto !important;
+          border-radius: 12px;
+        }
+        .tiles > .game > .game-info {
+          flex: 0 0 auto !important;
+          padding: 6px 7px 2px;
+          gap: 6px;
+          min-height: 0 !important;
+        }
+        .tiles .game-name {
+          font-size: clamp(14px, 1.45vw, 23px);
+        }
+        .tiles .arrow {
+          width: 31px;
+          height: 31px;
+          font-size: 19px;
+        }
+        .tiles .emoji {
+          font-size: clamp(35px, 4.6vh, 70px);
         }
       }
-      @media (max-width: 800px) {
+      /* On genuinely narrow/short screens preserve legibility with scrolling. */
+      @media (max-width: 900px), (max-height: 539px) {
+        html,
+        body {
+          overflow: auto;
+        }
+        .hub {
+          height: auto !important;
+          min-height: 100dvh !important;
+          overflow: visible !important;
+        }
+        .tiles,
+        .tiles.overflow {
+          display: flex !important;
+          flex-wrap: wrap !important;
+          justify-content: center !important;
+          align-content: flex-start !important;
+          align-items: stretch !important;
+          flex: none !important;
+          width: 100% !important;
+          max-width: none !important;
+          overflow: visible !important;
+          gap: 12px !important;
+        }
         .tiles > .game {
-          flex-basis: calc((100% - 18px) / 2);
-          width: calc((100% - 18px) / 2);
+          flex: 0 0 calc((100% - 12px) / 2);
+          width: calc((100% - 12px) / 2);
+          height: auto !important;
+          min-height: 0 !important;
+        }
+        .tiles > .game > .art {
+          flex: 0 0 auto !important;
+          aspect-ratio: 16/9 !important;
         }
       }
       @media (max-width: 540px) {
@@ -1017,7 +1083,7 @@
     <script>
       "use strict";
       // Update this string when publishing changed HTML/CSS/JS. Other devices detect the release and reload automatically.
-      const BUILD_VERSION = "stemfest-2026-11-19.11";
+      const BUILD_VERSION = "stemfest-2026-11-19.13";
       // Change this number to control the intro duration in milliseconds. 2500 = 2.5 seconds.
       const LOADING_SCREEN_MS = 2500;
       const STORE = "frontier.stemfest.override.v4";
@@ -1247,6 +1313,7 @@
         $("count").textContent = n + " " + (n === 1 ? "GAME" : "GAMES");
         const c = cols(n);
         root.style.setProperty("--cols", c);
+        root.style.setProperty("--rows", Math.ceil(n / c) || 1);
         root.classList.toggle("overflow", n > c * 2);
         if (!n) {
           root.append(
@@ -1300,12 +1367,36 @@
           });
           root.append(card);
         }
+        requestAnimationFrame(fitTiles);
       }
-      window.addEventListener("resize", () => {
-        const c = cols(games.length);
-        $("tiles").style.setProperty("--cols", c);
-        $("tiles").classList.toggle("overflow", games.length > c * 2);
-      });
+      // Compute actual tile height from the available viewport space, NOT from image aspect ratio.
+      // This makes 9-12 games fit in three rows at 100% browser zoom.
+      function fitTiles() {
+        const root = $("tiles");
+        const n = games.length;
+        const c = cols(n);
+        const rows = Math.max(1, Math.ceil(n / c));
+        root.style.setProperty("--cols", c);
+        root.style.setProperty("--rows", rows);
+        root.classList.toggle("overflow", n > c * 2);
+        if (window.innerWidth <= 900 || window.innerHeight < 540 || !n) {
+          root.style.removeProperty("--card-height");
+          return;
+        }
+        const gap = 10;
+        const height = root.getBoundingClientRect().height;
+        // Pixel height deliberately constrained to the visible tile area.
+        const cardHeight = Math.max(
+          65,
+          Math.floor((height - gap * (rows - 1)) / rows) - 1,
+        );
+        root.style.setProperty("--card-height", cardHeight + "px");
+      }
+      window.addEventListener("resize", fitTiles);
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(fitTiles).catch(() => {});
+      }
+
       function focusGame() {
         if (activeId === null) return;
         const frame = $("frame");
