@@ -1,3 +1,4 @@
+
 {
   "games": [
     {
@@ -9,6 +10,27 @@
     },
     {
       "url": "https://kb1699-wq.github.io/NUMBER-SHIFT/"
+    },
+    {
+      "url": "https://kl84600.github.io/Warriors-battle/",
+      "title": "Hollow Knight Duel"
+    },
+    {
+      "url": "https://certified-stranger.github.io/SpinStop/"
+    },
+    {
+      "url": "https://sl2926-byte.github.io/Astralhunter/"
+    },
+    {
+      "url": "https://jp2919-creator.github.io/My-Game/",
+      "title": "Realms of the Deep"
+    },
+    {
+      "url": "https://ew2952.github.io/Cave-Diving/"
+    },
+    {
+      "url": "https://sc8272-byte.github.io/MLP.univers/",
+      "title": "Fluff Clash 3D"
     }
   ]
 }
