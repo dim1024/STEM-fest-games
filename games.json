@@ -2,7 +2,7 @@
 {
   "games": [
     {
-      "url": "https://tc9303-a11y.github.io/TEVINS-GAME/",
+      "url": "https://dim1024.github.io/shark_tevin/",
       "title": "Shark Parkour",
       "image": "screenshots/Shark Parkour.png"
     },
@@ -22,11 +22,11 @@
       "image": "screenshots/Hollow Night Dual.png"
     },
     {
-      "url": "https://certified-stranger.github.io/SpinStop/",
+      "url": "https://dim1024.github.io/alexl-spin/",
       "image": "screenshots/Spinstop.png"
     },
     {
-      "url": "https://sl2926-byte.github.io/Astralhunter/",
+      "url": "https://dim1024.github.io/stiben-astral/",
       "title": "Astral Hunter",
       "image": "screenshots/Astral Hunter.png"
     },
