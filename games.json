@@ -31,7 +31,7 @@
       "image": "screenshots/Astral Hunter.png"
     },
     {
-      "url": "https://jp2919-creator.github.io/My-Game/",
+      "url": "https://dim1024.github.io/vexiq-test/",
       "title": "Realms of the Deep",
       "image": "Realism of the deep.png"
     },
@@ -43,6 +43,11 @@
       "url": "https://sc8272-byte.github.io/FluffyClash/",
       "title": "Fluff Clash 3D",
       "image": "screenshots/Fluff Clash 3d.png"
+    }
+    {
+      "url": "dim1024.github.io/AB-game/",
+      "title": "Zombie Apocalypse",
+      "image": "screenshots/Zombie-Apocalypse.png"
     }
   ]
 }
